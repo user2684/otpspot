@@ -182,10 +182,11 @@ def add(description,mac,expire_days):
         label = "_"+description+"_"+mac.replace(":","")+"_"+expire+"_"
 	# check if the same host is already there
 	entries = run_command("wireless_list",[])
-        for i in range(len(entries)):
-                entry = entries[i]
-                if entry["description"] == description or entry["mac"] == mac.replace(":",""):
-			return "Device already registered"
+	if len(entries) > 0:
+	        for i in range(len(entries)):
+	                entry = entries[i]
+	                if entry["description"] == description or entry["mac"] == mac.replace(":",""):
+				return "Device already registered"
 	# add the entries
 	run_command("wireless_add",[label,mac])
 	if config.router["add_firewall_rule"]:

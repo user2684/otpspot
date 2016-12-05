@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import os
+import subprocess
 
 # variables
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -20,7 +21,7 @@ def run_command(command):
 # install all the dependencies
 def install_deps():
 	print "Preparing dependencies..."
-	print Installing pamtester..."
+	print "Installing pamtester..."
 	run_command("apt-get install pamtester")
 	print "Installing flask..."
 	run_command("apt-get install python-flask")
@@ -44,11 +45,11 @@ def install():
 	run_command("chmod 755 "+service_location)
 	# creating the pam service
 	print "Creating the pam service..."
-	run_command("cp "+pam_template+" /etc/pam.d")
+	run_command("cp "+pam_template+" /etc/pam.d/"+service_filename)
 	# provide additional instructions
-	print "To finalize the configuration, do the following":
+	print "To finalize the configuration, do the following:"
 	print "\t- Download, compile and install Google Authenticator from https://github.com/google/google-authenticator"
-	print "\t- Create a user (e.g. otpspot) and set it a valid password"
+	print "\t- Create a user (e.g. adduser otpspot) and set it a valid password"
 	print "\t- Become that user (e.g. su otpspot)"
 	print "\t- Run google-authenticator"
 	print "\t- On your phone, install Google Authenticator from the app store"
@@ -58,7 +59,9 @@ def install():
 	print "\t\tpost-down /etc/init.d/otpspot stop"
 	print "\t- If you wish to have the portal always running, run as root: update-rc.d otpspot defaults"
 	print "\t- Rename the config-example.py file in config.py and edit it"
-	print "\t- Set the INTERFACE, PORT and IP variables on top of /etc/init.t/otpspot"
+	print "\t- Set the INTERFACE, PORT and IP variables on top of /etc/init.d/otpspot"
+	print "\t- Customize the SSID of the guest network in /etc/hostapd/hostapd.conf"
+	print "\t- Ensure you have a DHCP server configured for that network"
 
 # uninstall routine
 def uninstall():
@@ -77,6 +80,7 @@ def uninstall():
 if os.geteuid() != 0:
         exit("ERROR: You need to have root privileges to run this script.\nPlease try again, this time using 'sudo'. Exiting.")
 # run the installation
+print "[OTPspot installation script]\n"
 if len(sys.argv) == 2 and sys.argv[1] == "-u": uninstall()
 else: install()
 

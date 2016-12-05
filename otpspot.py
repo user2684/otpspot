@@ -6,6 +6,9 @@ import subprocess
 import config
 import tp_link
 
+# version
+version = "1.0"
+
 # variables
 base_dir = os.path.abspath(os.path.dirname(__file__))
 web_folder = base_dir+"/web"
@@ -16,7 +19,7 @@ app = Flask(__name__,template_folder=web_folder)
 
 # define the plugin to use for the router
 router = None
-if config.router["plugin"] == "tp-link:TD-W8970" router = tp_link
+if config.router["plugin"] == "tp-link:TD-W8970": router = tp_link
 if router is None:
         print "Unknown router plugin "+config.router["plugin"]
         sys.exit(1)
@@ -82,4 +85,5 @@ def verify_otp(code):
 
 # run the main app
 if __name__ == '__main__':
+	print "Welcome to OTPspot v"+version
         run()

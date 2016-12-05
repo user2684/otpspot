@@ -3,7 +3,7 @@
 # router related configuration
 router = {
 	# the plugin to use for communicating with the router
-	"plugin": "tp-link:TD-W8970"
+	"plugin": "tp-link:TD-W8970",
 	# the IP address of the router
 	"ip": "192.168.0.1",
 	# username of the admin user
