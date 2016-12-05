@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+
+    <title>Wireless Guest Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="web/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="web/css/font-awesome.min.css">
+    <style type="text/css">
+body {
+  height: 100vh;
+  background: url("web/images/background.jpg") 50% fixed;
+  background-size: cover;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  background: rgba(4, 40, 68, 0.85);
+}
+    </style>
+    <script src="web/js/jquery.min.js"></script>
+    <script src="web/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="wrapper">    
+	    <div class="container">    
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title" align="center"><b>Wireless Guest Login</b></div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+                        <div id="message" class="alert alert-info col-sm-12" align="center">Give a description of the device and the access code provided by the host</div>
+                        <form id="loginform" class="form-horizontal" role="form">
+                                    
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input id="description" type="text" class="form-control" name="description" value="" placeholder="Description">                                        
+                                    </div>
+                                
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input id="code" type="text" class="form-control" name="code" placeholder="Access Code">
+                                    </div>
+                             <input id="mac" type="hidden" class="form-control" name="mac">
+							 <input id="expire_days" type="hidden" class="form-control" name="expire_days">
+                                <div style="margin-top:10px" class="form-group">
+                                    <div class="col-sm-12 controls">
+									<button id="register" class="btn btn-primary" style="display: block; width: 100%;">Register</button>
+                                    </div>
+                                </div>
+                            </form>     								
+                        </div>                     
+                    </div>  
+        </div>
+
+    </div>
+</div>
+    
+<script type="text/javascript">
+var working = false;
+$("#register").unbind().on('click', function(e) {
+	e.preventDefault();
+	$("#register").html('<span class="fa fa-refresh fa-spin"></span> Registering...')
+	$("#register").addClass("disabled")
+	var mac = $("#mac").val()
+	var description = $("#description").val()
+	var expire_days = $("#expire_days").val()
+	var code = $("#code").val()
+	setTimeout(function() {
+		var url = "/register?description="+description+"&mac="+mac+"&code="+code+"&expire_days="+expire_days
+		$.get(url, function( data ) {
+			if (data == "ok") {
+				$("#message").html('<i class="fa fa-check"></i> Registered')
+				$("#message").removeClass('hidden alert-danger alert-success alert-info')
+				$("#message").addClass('alert-success')
+				$("#loginform").addClass('hidden')
+			} else {
+				$("#message").html('<i class="fa fa-exclamation-triangle"></i> ERROR: '+data)
+				$("#message").removeClass('hidden alert-danger alert-success alert-info')
+				$("#message").addClass('alert-danger')
+				$("#register").html('Register')
+				$("#register").removeClass("disabled")
+			}
+		});
+	}, 1000);
+});
+
+$(document).ready(function(){
+	$.get( "/get_mac_address", function( data ) {
+		$("#mac").val(data)
+	});
+	$.get( "/get_expire_days", function( data ) {
+		$("#expire_days").val(data)
+	});
+})	
+</script>
+</body>
+</html>
