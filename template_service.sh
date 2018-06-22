@@ -13,11 +13,6 @@
 ### END INIT INFO
 
 # VARIABLES
-IP=192.168.100.254
-PORT=8000
-INTERFACE=wlan0
-
-# OTHER VARIABLES
 DAEMON_PATH="#base_dir#"
 DAEMON="python otpspot.py"
 DAEMONOPTS=""
@@ -29,13 +24,6 @@ PIDFILE="/var/run/$NAME.pid"
 case "$1" in
 start)
 	printf "%-50s" "Starting $NAME..."
-	iptables -t nat -A PREROUTING -i $INTERFACE -p tcp --dport 80 -j DNAT --to $IP:$PORT
-	iptables -A INPUT -i $INTERFACE -p tcp --dport $PORT -j ACCEPT
-	iptables -A INPUT -i $INTERFACE -p udp --dport 67:68 --sport 67:68 -j ACCEPT
-	iptables -A INPUT -i $INTERFACE -p udp --dport 53 -j ACCEPT
-	iptables -A INPUT -i $INTERFACE -j DROP
-	iptables -A FORWARD -i $INTERFACE -j DROP
-	hostapd -B /etc/hostapd/hostapd.conf 2>&1 > /dev/null
 	cd $DAEMON_PATH
 	PID=`$DAEMON $DAEMONOPTS > "$DEAMONLOGS" 2>&1 & echo $!`
         if [ -z $PID ]; then
@@ -63,7 +51,6 @@ stop)
             PID=`cat $PIDFILE`
             cd $DAEMON_PATH
         if [ -f $PIDFILE ]; then
-	    killall hostapd
             kill -HUP $PID
             printf "%s\n" "Ok"
             rm -f $PIDFILE

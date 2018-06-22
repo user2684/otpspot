@@ -3,4 +3,5 @@
 *.save
 *~
 *.pyc
-config.py
+config_custom.py
+otpspot.log
