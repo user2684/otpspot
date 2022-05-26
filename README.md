@@ -32,7 +32,7 @@ To install and configure nodogsplash on a Openwrt-based router:
 	- To run on the newly created wifi interface only add: `option gatewayinterface 'wlan0-1'`
 	- To allow connections from preauthenticated users to the captive portal running on the OTPSpot server add: `list preauthenticated_users 'allow tcp port 8000 to <OTPSpot_server_ip>'`
 - Edit nodogsplash captive portal by editing /etc/nodogsplash/htdocs/splash.html:
-	- To redirect users to the OTPspot captive portal add within the <head> section the following: <meta http-equiv="refresh" content="0;URL='http://<OTPSpot_server_ip>:8000/index.html?authaction=$authaction&amp;tok=$tok&amp;redir=$redir&amp;mac=$clientmac&amp;ip=$clientip&amp;gatewayname=$gatewayname'" />
+	- To redirect users to the OTPspot captive portal add within the <head> section the following: `<meta http-equiv="refresh" content="0;URL='http://<OTPSpot_server_ip>:8000/index.html?authaction=$authaction&amp;tok=$tok&amp;redir=$redir&amp;mac=$clientmac&amp;ip=$clientip&amp;gatewayname=$gatewayname'" />`
 
 OTPspot
 ---------------------
