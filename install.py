@@ -14,7 +14,7 @@ service_filename = "otpspot"
 def run_command(command):
     process = subprocess.Popen(
         command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = ''
+    output = b''
     for line in process.stdout.readlines():
         output = output+line
     return output.rstrip()
@@ -23,9 +23,9 @@ def run_command(command):
 def install_deps():
     print("Preparing dependencies...")
     print("Installing pamtester...")
-    run_command("apt-get install pamtester")
+    run_command("apt install pamtester")
     print("Installing flask...")
-    run_command("apt-get install python-flask")
+    run_command("apt install python3-flask")
 
 # installation routine
 def install():
