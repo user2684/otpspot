@@ -7,7 +7,7 @@ import os.path
 import logging
 
 # version
-version = "2.0"
+version = "2.1"
 
 # variables
 base_dir = os.path.abspath(os.path.dirname(__file__))
